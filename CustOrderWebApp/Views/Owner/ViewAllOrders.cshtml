@@ -1,0 +1,69 @@
+﻿@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Mvc;
+@using X.PagedList.Web.Common;
+
+@model IPagedList<DataLayer.Order>
+@{
+    ViewData["Title"] = "ViewAllOrders";
+    Layout = "~/Views/Owner/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+
+    <p> <b> View All Orders </b>  </p>
+    <table class="table table-striped table-dark p-lg-5">
+        <thead class="p-5">
+
+
+            <tr>
+                <th> @Html.DisplayName("Customer ID")</th>
+                <th> @Html.DisplayName("Items")</th>
+                <th> @Html.DisplayName("Order Date")</th>
+                <th> @Html.DisplayName("Shipment Date")</th>
+                <th> @Html.DisplayName("Delete Order")</th>
+
+            </tr>
+        </thead>
+
+
+        @foreach (var order in Model)
+        {
+            <tbody>
+                <tr>
+
+                    @*<td> @OrderNum </td>*@
+                    <td>@Html.DisplayFor(m => order.CustomerID)</td>
+                    <td>@Html.DisplayFor(m => order.Items)</td>
+                    <td> @Html.DisplayFor(m => order.OrderDate)</td>
+                    <td> @Html.DisplayFor(m => order.ShipmentDate)</td>
+                    <td>  @Html.ActionLink("Delete", "DeleteOrder", "Owner", new { orderID = order.ID }, new { @class = "btn btn-danger" }) </td>
+
+                </tr>
+            </tbody>
+
+        }
+    </table>
+
+    @*@Html.PagedListPager(Model, page => Url.Action("DisplayOrderList", new  { page}))*@
+
+
+    @Html.PagedListPager((IPagedList)Model, page => Url.Action("ViewAllOrders", new { page }), new PagedListRenderOptions
+        {
+            LiElementClasses = new string[] { "page-item" },
+            PageClasses = new string[] { "page-link" }
+        })
+
+  
+
+
+
+
+    @foreach (var order in Model)
+    {
+        @Html.ActionLink("Back", "OwnerloggedIn", "Owner", new { id = order.CustomerID }, new { @class = "btn btn-dark" })
+        break;
+    }
+
+</div>
+
